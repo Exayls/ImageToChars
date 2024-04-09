@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{96BA2EA2-6
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ImageToCharsTests", "test\ImageToChars.Tests\ImageToCharsTests.fsproj", "{7ADD78F1-10CE-4198-AB1E-1F258E1C033A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7FC1777E-7604-4834-8EF7-EE82A2CE05C6}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ImageToChars", "src\ImageToChars\ImageToChars.fsproj", "{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +24,13 @@ Global
 		{7ADD78F1-10CE-4198-AB1E-1F258E1C033A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ADD78F1-10CE-4198-AB1E-1F258E1C033A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ADD78F1-10CE-4198-AB1E-1F258E1C033A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7ADD78F1-10CE-4198-AB1E-1F258E1C033A} = {96BA2EA2-6C5F-4DC3-8D9C-FDE72D67C01C}
+		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE} = {7FC1777E-7604-4834-8EF7-EE82A2CE05C6}
 	EndGlobalSection
 EndGlobal
