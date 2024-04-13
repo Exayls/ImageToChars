@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7FC1777E-760
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ImageToChars", "src\ImageToChars\ImageToChars.fsproj", "{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "src\Helper\Helper.csproj", "{F94E787A-A0C8-41B4-87C4-60221051C3BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +30,14 @@ Global
 		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F94E787A-A0C8-41B4-87C4-60221051C3BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F94E787A-A0C8-41B4-87C4-60221051C3BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F94E787A-A0C8-41B4-87C4-60221051C3BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F94E787A-A0C8-41B4-87C4-60221051C3BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7ADD78F1-10CE-4198-AB1E-1F258E1C033A} = {96BA2EA2-6C5F-4DC3-8D9C-FDE72D67C01C}
 		{31DE9FFC-5181-42BA-8F0E-7B0582EFDDBE} = {7FC1777E-7604-4834-8EF7-EE82A2CE05C6}
+		{F94E787A-A0C8-41B4-87C4-60221051C3BA} = {7FC1777E-7604-4834-8EF7-EE82A2CE05C6}
 	EndGlobalSection
 EndGlobal

@@ -33,6 +33,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ImageToChars\ImageToChars.fsproj" />
+		<ProjectReference Include="..\..\src\Helper\Helper.csproj" />
 	</ItemGroup>
 
 </Project>
