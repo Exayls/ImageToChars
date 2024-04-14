@@ -9,8 +9,8 @@ open SixLabors.ImageSharp.PixelFormats
 open Helper
 
 let GetArrayFrom (image: Image<Rgba32>) : float[,]= 
-    let pixels = Helper.ImageSharp.GetPixelArray image
-    let ComputeIntensity (a:Rgba32) = float ((int a.R + int a.G + int a.B)/(3*255))
+    let pixels :Rgba32[,]= Helper.ImageSharp.GetPixelArray image
+    let ComputeIntensity (a:Rgba32) = float (float(int a.R + int a.G + int a.B)/float(3*255))
     let intensityArray = Array2D.map ComputeIntensity pixels
     intensityArray
 
@@ -94,7 +94,7 @@ let ``when_arrays_are_equals_AreEquals_should_returns_false`` () =
     Assert.False(equality)
 
 [<Fact>]
-let ``when_calling_GetArray_should_get_image_coresponding`` () =
+let ``when_calling_GetArray_With_T_should_get_image_coresponding`` () =
     let TFilter: float[,] =
         Transpose (
         array2D
@@ -103,9 +103,45 @@ let ``when_calling_GetArray_should_get_image_coresponding`` () =
               [ 1; 0; 1 ]
               [ 1; 0; 1 ]
               [ 1; 0; 1 ]
-              [ 1; 1; 1 ] ])
+              [ 1; 1; 1 ] ]
+        )
     let image = Image.Load<Rgba32>("ressources/T.png")
+    let imageArray = GetArrayFrom(image)
+    Assert.True(AreEqualsWithAcc imageArray TFilter 0.1)
+
+[<Fact>]
+let ``when_calling_GetArray_With_I_should_get_image_coresponding`` () =
+    let TFilter: float[,] =
+        Transpose (
+        array2D
+            [ [ 1; 1; 1 ]
+              [ 1; 0.5; 1 ]
+              [ 1; 0.5; 1 ]
+              [ 1; 0.5; 1 ]
+              [ 1; 0.5; 1 ]
+              [ 1; 1; 1 ] ]
+        )
+    let image = Image.Load<Rgba32>("ressources/I.png")
     let imageArray = GetArrayFrom(image)
     printf "%A" (Transpose imageArray)
     Assert.True(AreEqualsWithAcc imageArray TFilter 0.1)
+
+
+[<Fact>]
+let ``when_calling_GetArray_With_E_should_get_image_coresponding`` () =
+    let TFilter: float[,] =
+        Transpose (
+        array2D
+            [ [ 1; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 1 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ] ]
+        )
+    let image = Image.Load<Rgba32>("ressources/E.png")
+    let imageArray = GetArrayFrom(image)
+    printf "%A" (Transpose imageArray)
+    Assert.True(AreEqualsWithAcc imageArray TFilter 0.1)
+
 
