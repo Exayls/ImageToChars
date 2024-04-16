@@ -165,14 +165,31 @@ let ``when_calling_GetArray_With_E_should_get_image_coresponding`` () =
 //               [ 0.78; 1; 1 ]
 //               [ 0.78; 0.78; 0.78 ] ]
 
-//     let reduced: float[,] =
-//         array2D
-//             [ [ 1; 1; 1 ]
-//               [ 0.78; 0.78; 0.78 ]
-//               [ 0.78; 1; 1 ]
-//               [ 0.78; 0.78; 1 ]
-//               [ 0.78; 1; 1 ]
-//               [ 0.78; 0.78; 0.78 ] ]
-//     Assert.True()
+//     let image = Image.Load<Rgba32>("ressources/E_adjusted.png")
+//     let reduced = GetArrayFrom(image)
+//     printf "%A" (Transpose reduced)
+//     Assert.True(AreEquals reduced (Resize array 3 3))
 
 
+[<Fact>]
+let ``mean_should_return_mean_of_array_1`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1; 1 ]
+              [ 1; 0 ] ]
+
+    Assert.True(0.75 = (Mean array))
+
+[<Fact>]
+let ``mean_should_return_mean_of_array_2`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 1 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ] ]
+
+    printf "%f" ((Mean array))
+    Assert.True(0.8777 < (Mean array) && (Mean array)<0.8778)

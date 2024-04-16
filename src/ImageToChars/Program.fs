@@ -44,3 +44,15 @@ module ImageToChars =
             for j in 0 .. cols - 1 do
                 result.[i, j] <- func array1.[i, j] array2.[i, j]
         result
+
+    // let Resize (array2d:'float[,]) width height= 
+    //     Array2D.init width height (fun r c -> PartOfElement r c width height)
+
+    let Mean (array:float[,]) = 
+        let width = Array2D.length1 array
+        let height = Array2D.length2 array
+        let seq =seq{
+            for row in 0 .. width - 1 do
+                    for col in 0 .. height - 1 -> array[row,col]
+        }
+        (Seq.sum seq)/float(height*width)
