@@ -29,7 +29,7 @@ module ImageToChars =
             let rows = arr1.GetLength(0)
             let cols = arr1.GetLength(1)
             let indices = seq { for i in 0 .. rows - 1 do for j in 0 .. cols - 1 -> (i, j) }
-            not (Seq.exists (fun (i, j) -> arr1.[i, j] - arr2.[i, j] > acc) indices)
+            not (Seq.exists (fun (i, j) -> (abs (arr1.[i, j] - arr2.[i, j])) > acc) indices)
 
     let Transpose (array2d:'a[,])= 
         Array2D.init (array2d |> Array2D.length2) (array2d |> Array2D.length1) (fun r c -> array2d.[c,r])
@@ -58,14 +58,9 @@ module ImageToChars =
         (Seq.sum seq)/float(height*width)
 
     let GetFilter x y (array:float[,]) width height =
-        let newWidth = float(Array2D.length1 array)/width
-        let newHeight = float(Array2D.length2 array)/height
-        if height = float((Array2D.length2 array)/2)
-            then Array2D.init 1 2 (fun x1 y1 -> array[x+x1, y+y1])
-            else
-        if width = float((Array2D.length1 array)/2)
-            then Array2D.init 2 1 (fun x1 y1 -> array[x+x1, y+y1])
-            else Array2D.init 1 1 (fun x1 y1 -> array[x, y])
+        let newWidth = ceil (float(Array2D.length1 array)/width)
+        let newHeight = ceil (float(Array2D.length2 array)/height)
+        Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> array[x+x1, y+y1])
  
 
 

@@ -202,7 +202,10 @@ let ``Filter_should_return_same_if_same_size`` () =
               [ 0.78; 0.78; 1 ]
               [ 0.78; 1; 1 ]
               [ 0.78; 0.78; 0.78 ] ]
-    Assert.True(FloatEquals 0.78 ((GetFilter 1 1 array 3 6)[0,0]) 0.001)
+    let filter: float[,] =
+        array2D
+            [ [ 0.78;] ]
+    Assert.True(AreEqualsWithAcc filter (GetFilter 1 1 array 6 3) 0.001)
 
 
 [<Fact>]
@@ -215,7 +218,10 @@ let ``Filter_should_return_same_if_same_size_2`` () =
               [ 0.78; 0.78; 1 ]
               [ 0.78; 1; 1 ]
               [ 0.78; 0.78; 0.78 ] ]
-    Assert.True(FloatEquals 1 ((GetFilter 4 2 array 3 6)[0,0]) 0.001)
+    let filter: float[,] =
+        array2D
+            [ [ 1;] ]
+    Assert.True(AreEqualsWithAcc filter (GetFilter 4 2 array 6 3) 0.001)
 
 [<Fact>]
 let ``Filter_should_return_2_case_if_half_width`` () =
@@ -250,11 +256,18 @@ let ``Filter_should_return_2_case_if_half_size`` () =
     Assert.True(AreEqualsWithAcc filter (GetFilter 2 2 array 6 2) 0.001)
 
 
-
-
-
-
-
+[<Fact>]
+let ``Filter_should_return_half_case_if_double_size`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1.00; 0.10; 0.30 ]
+              [ 0.80; 0.50; 0.60 ] ]
+    let filter: float[,] =
+        array2D
+            [ [ 1; 0.05;] ]
+    printfn "%A" (GetFilter 0 0 array 2 2)
+    printfn "%A" filter
+    Assert.True(AreEqualsWithAcc filter (GetFilter 0 0 array 2 2) 0.00001)
 
 
 
