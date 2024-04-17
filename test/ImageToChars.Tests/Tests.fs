@@ -9,6 +9,8 @@ open SixLabors.ImageSharp.PixelFormats
 open Helper
 open ImageToChars.ImageToChars
 
+let FloatEquals x y precision=
+    (x - precision) < y && y < (x + precision)
 
 [<Fact>]
 let ``when_arrays_are_equals_AreEquals_should_returns_true`` () =
@@ -133,7 +135,6 @@ let ``when_calling_GetArray_With_I_should_get_image_coresponding`` () =
         )
     let image = Image.Load<Rgba32>("ressources/I.png")
     let imageArray = GetArrayFrom(image)
-    printf "%A" (Transpose imageArray)
     Assert.True(AreEqualsWithAcc imageArray TFilter 0.01)
 
 
@@ -151,7 +152,6 @@ let ``when_calling_GetArray_With_E_should_get_image_coresponding`` () =
         )
     let image = Image.Load<Rgba32>("ressources/E.png")
     let imageArray = GetArrayFrom(image)
-    printf "%A" (Transpose imageArray)
     Assert.True(AreEqualsWithAcc imageArray TFilter 0.01)
 
 // [<Fact>]
@@ -190,6 +190,72 @@ let ``mean_should_return_mean_of_array_2`` () =
               [ 0.78; 0.78; 1 ]
               [ 0.78; 1; 1 ]
               [ 0.78; 0.78; 0.78 ] ]
+    Assert.True(FloatEquals (Mean array) 0.87777 0.00001)
 
-    printf "%f" ((Mean array))
-    Assert.True(0.8777 < (Mean array) && (Mean array)<0.8778)
+[<Fact>]
+let ``Filter_should_return_same_if_same_size`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 1 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ] ]
+    Assert.True(FloatEquals 0.78 ((GetFilter 1 1 array 3 6)[0,0]) 0.001)
+
+
+[<Fact>]
+let ``Filter_should_return_same_if_same_size_2`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 1 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ] ]
+    Assert.True(FloatEquals 1 ((GetFilter 4 2 array 3 6)[0,0]) 0.001)
+
+[<Fact>]
+let ``Filter_should_return_2_case_if_half_width`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 1 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ] ]
+    let filter: float[,] =
+        array2D
+            [ [ 1;]
+              [ 0.78;] ]
+    Assert.True(AreEqualsWithAcc filter (GetFilter 0 0 array 3 3) 0.001)
+
+[<Fact>]
+let ``Filter_should_return_2_case_if_half_size`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1; 1; 1; 1 ]
+              [ 0.78; 0.78; 0.78; 1 ]
+              [ 0.78; 1; 1; 0.5 ]
+              [ 0.78; 0.78; 1; 1 ]
+              [ 0.78; 1; 1; 0.5 ]
+              [ 0.78; 0.78; 0.78; 1 ] ]
+    let filter: float[,] =
+        array2D
+            [ [ 1; 0.5;] ]
+    printfn "%A" (GetFilter 2 2 array 6 2)
+    Assert.True(AreEqualsWithAcc filter (GetFilter 2 2 array 6 2) 0.001)
+
+
+
+
+
+
+
+
+
+
+
