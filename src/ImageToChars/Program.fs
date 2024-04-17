@@ -46,7 +46,7 @@ module ImageToChars =
         result
 
     // let Resize (array2d:'float[,]) width height= 
-    //     Array2D.init width height (fun r c -> PartOfElement r c width height)
+    //     Array2D.init width height (fun x y -> Mean (GetFilter x y array2d width height))
 
     let Mean (array:float[,]) = 
         let width = Array2D.length1 array
@@ -56,3 +56,20 @@ module ImageToChars =
                     for col in 0 .. height - 1 -> array[row,col]
         }
         (Seq.sum seq)/float(height*width)
+
+    let GetFilter x y (array:float[,]) width height =
+        let newWidth = float(Array2D.length1 array)/width
+        let newHeight = float(Array2D.length2 array)/height
+        if height = float((Array2D.length2 array)/2)
+            then Array2D.init 1 2 (fun x1 y1 -> array[x+x1, y+y1])
+            else
+        if width = float((Array2D.length1 array)/2)
+            then Array2D.init 2 1 (fun x1 y1 -> array[x+x1, y+y1])
+            else Array2D.init 1 1 (fun x1 y1 -> array[x, y])
+ 
+
+
+
+
+
+
