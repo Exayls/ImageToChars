@@ -271,14 +271,12 @@ let ``Filter_should_return_2_case_if_half_size`` () =
         array2D
             [ [1; 1] ]
     let (filter, weight) = GetFilter 2 1 array 6 2
-    printfn "%A" expectedFilter
-    printfn "%A" filter
     Assert.True(AreEqualsWithAcc expectedFilter filter 0.001)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.001)
 
 
 [<Fact>]
-let ``Filter_should_return_half_case_if_double_size`` () =
+let ``Filter_should_return_half_weight_if_half_case_interpolation`` () =
     let array: float[,] =
         array2D
             [ [ 1.00; 0.10; 0.30 ]
@@ -290,11 +288,43 @@ let ``Filter_should_return_half_case_if_double_size`` () =
         array2D
             [ [1; 0.5] ]
     let (filter, weight) = GetFilter 0 0 array 2 2
-    // printfn "%A" expectedWeight
-    // printfn "%A" weight
     Assert.True(AreEqualsWithAcc expectedFilter filter 0.001)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.001)
 
+[<Fact>]
+let ``Filter_should_return_half_weight_if_half_case_interpolation_2`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1.00; 0.10; 0.30; 0.7; 0.9 ] ]
+    let expectedFilter: float[,] =
+        array2D
+            [ [ 1; 0.10] ]
+    let expectedWeight: float[,] =
+        array2D
+            [ [1; 0.666] ]
+    let (filter, weight) = GetFilter 0 0 array 1 3
+    Assert.True(AreEqualsWithAcc expectedFilter filter 0.01)
+    Assert.True(AreEqualsWithAcc expectedWeight weight 0.01)
 
 
+[<Fact>]
+let ``Filter_should_return_half_weight_if_half_case_interpolation_3`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1.00; 0.10; 0.30; 0.7; 0.9 ] ]
+    let expectedFilter: float[,] =
+        array2D
+            [ [ 0.10; 0.30; 0.70 ] ]
+    let expectedWeight: float[,] =
+        array2D
+            [ [0.3333; 1; 0.3333] ]
+    printfn "aaaa"
+    let (filter, weight) = GetFilter 0 1 array 1 3
+    printfn "%A" expectedWeight
+    printfn "%A" weight
+    printfn "%A" expectedFilter
+    printfn "%A" filter
+    printfn "aaaa"
+    Assert.True(AreEqualsWithAcc expectedFilter filter 0.01)
+    Assert.True(AreEqualsWithAcc expectedWeight weight 0.01)
 
