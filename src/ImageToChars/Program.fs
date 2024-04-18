@@ -60,8 +60,10 @@ module ImageToChars =
     let GetFilter x y (array:float[,]) width height =
         let newWidth = ceil (float(Array2D.length1 array)/width)
         let newHeight = ceil (float(Array2D.length2 array)/height)
+        let firstY = int(ceil((float(Array2D.length2 array)/height)*y))
+        let firstX = int(ceil((float(Array2D.length1 array)/width)*x))
         (
-        Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> array[x+x1, y+y1]) ,
+        Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> array[firstX+x1, firstY+y1]) ,
         Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> float(1))
         )
  

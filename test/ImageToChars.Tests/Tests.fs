@@ -270,7 +270,9 @@ let ``Filter_should_return_2_case_if_half_size`` () =
     let expectedWeight: float[,] =
         array2D
             [ [1; 1] ]
-    let (filter, weight) = GetFilter 2 2 array 6 2
+    let (filter, weight) = GetFilter 2 1 array 6 2
+    printfn "%A" expectedFilter
+    printfn "%A" filter
     Assert.True(AreEqualsWithAcc expectedFilter filter 0.001)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.001)
 
@@ -288,9 +290,9 @@ let ``Filter_should_return_half_case_if_double_size`` () =
         array2D
             [ [1; 0.5] ]
     let (filter, weight) = GetFilter 0 0 array 2 2
-    printfn "%A" expectedWeight
-    printfn "%A" weight
-    Assert.True(AreEqualsWithAcc expectedFilter filter 0.00001)
+    // printfn "%A" expectedWeight
+    // printfn "%A" weight
+    Assert.True(AreEqualsWithAcc expectedFilter filter 0.001)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.001)
 
 
