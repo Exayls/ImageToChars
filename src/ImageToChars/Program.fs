@@ -58,24 +58,41 @@ module ImageToChars =
         (Seq.sum seq)/float(height*width)
 
     let GetFilter (x:int) (y:int) (array:float[,]) (width:int) (height:int) =
-        let firstY = int(floor((float(Array2D.length2 array)/float(height))*float(y)))
-        let firstX = int(floor((float(Array2D.length1 array)/float(width))*float(x)))
-        let lastY = int(ceil((float(Array2D.length2 array)/float(height))*float(y+1)))
-        let lastX = int(floor((float(Array2D.length1 array)/float(width))*float(x+1)))
+        let ratioY = (float(Array2D.length2 array)/float(height))
+        let ratioX = (float(Array2D.length1 array)/float(width))
+
+        let firstFloatY = (ratioY*float(y))
+        let firstFloatX = (ratioX*float(x))
+        let lastFloatY = (ratioY*float(y+1))
+        let lastFloatX = (ratioX*float(x+1))
+
+        let firstY = int(floor(firstFloatY))
+        let firstX = int(floor(firstFloatX))
+        let lastY = int(ceil(lastFloatY))
+        let lastX = int(ceil(lastFloatX))
+
         let newWidth = lastX - firstX
         let newHeight = lastY - firstY
+
+        let firstYWeight = 1.0-abs(float(firstY)-firstFloatY)
+        let lastYWeight = 1.0-abs(float(lastY)-lastFloatY)
         (
         Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> array[firstX+x1, firstY+y1]) ,
         if (Array2D.length2 array) = 3 && height = 2
-            then array2D [[1.0;0.5]]
+            then array2D [[firstYWeight;lastYWeight]]
+            // then Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> float(1))
         elif (Array2D.length2 array) = 5 && height = 3 && y = 0
-            then array2D [[1.0;0.666]]
+            then array2D [[firstYWeight;lastYWeight]]
         elif (Array2D.length2 array) = 5 && height = 3 && y = 1
-            then array2D [[0.3333; 1.0;0.3333]]
-        else Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> float(1))
+            then array2D [[firstYWeight; 1.0;lastYWeight]]
+        else Array2D.init (int newWidth) (int newHeight) (fun x1 y1 ->
+            if y1 = 0
+                then firstYWeight
+            elif y1 = newHeight-1
+                then lastYWeight
+            else float(1))
         )
  
-
 
 
 

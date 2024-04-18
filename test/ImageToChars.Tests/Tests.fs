@@ -303,6 +303,11 @@ let ``Filter_should_return_half_weight_if_half_case_interpolation_2`` () =
         array2D
             [ [1; 0.666] ]
     let (filter, weight) = GetFilter 0 0 array 1 3
+    printfn "%A" expectedWeight
+    printfn "%A" weight
+    printfn "%A" expectedFilter
+    printfn "%A" filter
+    printfn "aaaa"
     Assert.True(AreEqualsWithAcc expectedFilter filter 0.01)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.01)
 
@@ -318,13 +323,7 @@ let ``Filter_should_return_half_weight_if_half_case_interpolation_3`` () =
     let expectedWeight: float[,] =
         array2D
             [ [0.3333; 1; 0.3333] ]
-    printfn "aaaa"
     let (filter, weight) = GetFilter 0 1 array 1 3
-    printfn "%A" expectedWeight
-    printfn "%A" weight
-    printfn "%A" expectedFilter
-    printfn "%A" filter
-    printfn "aaaa"
     Assert.True(AreEqualsWithAcc expectedFilter filter 0.01)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.01)
 
