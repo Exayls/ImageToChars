@@ -45,8 +45,6 @@ module ImageToChars =
                 result.[i, j] <- func array1.[i, j] array2.[i, j]
         result
 
-    // let Resize (array2d:'float[,]) width height= 
-    //     Array2D.init width height (fun x y -> Mean (GetFilter x y array2d width height))
 
     let Mean (array:float[,]) = 
         let width = Array2D.length1 array
@@ -56,6 +54,20 @@ module ImageToChars =
                     for col in 0 .. height - 1 -> array[row,col]
         }
         (Seq.sum seq)/float(height*width)
+
+    let WeightedMean ((array:float[,]), (weight:float[,])) = 
+        let width = Array2D.length1 array
+        let height = Array2D.length2 array
+        let seqArray =seq{
+            for row in 0 .. width - 1 do
+                    for col in 0 .. height - 1 -> array[row,col]*weight[row,col]
+        }
+        let seqWeight =seq{
+            for row in 0 .. width - 1 do
+                    for col in 0 .. height - 1 -> weight[row,col]
+        }
+        (Seq.sum seqArray)/(Seq.sum seqWeight)
+
 
     let GetFilter (x:int) (y:int) (array:float[,]) (width:int) (height:int) =
         let ratioY = (float(Array2D.length2 array)/float(height))
@@ -76,17 +88,30 @@ module ImageToChars =
 
         let firstYWeight = 1.0-abs(float(firstY)-firstFloatY)
         let lastYWeight = 1.0-abs(float(lastY)-lastFloatY)
+        let firstXWeight = 1.0-abs(float(firstX)-firstFloatX)
+        let lastXWeight = 1.0-abs(float(lastX)-lastFloatX)
         (
         Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> array[firstX+x1, firstY+y1]) ,
         Array2D.init (int newWidth) (int newHeight) (fun x1 y1 ->
-            if y1 = 0
-                then firstYWeight
-            elif y1 = newHeight-1
-                then lastYWeight
-            else float(1))
+            let YWeight =
+                if y1 = 0
+                    then firstYWeight
+                elif y1 = newHeight-1
+                    then lastYWeight
+                else 1.0
+            let XWeight =
+                if x1 = 0
+                    then firstXWeight
+                elif x1 = newWidth-1
+                    then lastXWeight
+                else 1.0
+            YWeight * XWeight
+            )
         )
  
 
+    // let Resize (array2d:'float[,]) width height= 
+    //     Array2D.init width height (fun x y -> Mean (GetFilter x y array2d width height))
 
 
 

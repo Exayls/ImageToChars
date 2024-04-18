@@ -303,11 +303,11 @@ let ``Filter_should_return_half_weight_if_half_case_interpolation_2`` () =
         array2D
             [ [1; 0.666] ]
     let (filter, weight) = GetFilter 0 0 array 1 3
-    printfn "%A" expectedWeight
-    printfn "%A" weight
-    printfn "%A" expectedFilter
-    printfn "%A" filter
-    printfn "aaaa"
+    // printfn "%A" expectedWeight
+    // printfn "%A" weight
+    // printfn "%A" expectedFilter
+    // printfn "%A" filter
+    // printfn "aaaa"
     Assert.True(AreEqualsWithAcc expectedFilter filter 0.01)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.01)
 
@@ -326,4 +326,39 @@ let ``Filter_should_return_half_weight_if_half_case_interpolation_3`` () =
     let (filter, weight) = GetFilter 0 1 array 1 3
     Assert.True(AreEqualsWithAcc expectedFilter filter 0.01)
     Assert.True(AreEqualsWithAcc expectedWeight weight 0.01)
+
+[<Fact>]
+let ``Filter_should_return_half_weight_if_half_case_interpolation_4`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1.00; 0.10; 0.30 ] ]
+    let expectedFilter: float[,] =
+        array2D
+            [ [1; 0.10 ] ]
+    let expectedWeight: float[,] =
+        array2D
+            [ [0.4; 0.2] ]
+    let (filter, weight) = GetFilter 0 1 array 1 5
+    // printfn "%A" expectedWeight
+    // printfn "%A" weight
+    // printfn "%A" expectedFilter
+    // printfn "%A" filter
+    Assert.True(AreEqualsWithAcc expectedFilter filter 0.01)
+    Assert.True(AreEqualsWithAcc expectedWeight weight 0.01)
+
+
+[<Fact>]
+let ``weighted_mean`` () =
+    let array: float[,] =
+        array2D
+            [ [ 4; 3 ]
+              [ 2; 1 ] ]
+    let weight: float[,] =
+        array2D
+            [ [ 1000; 100 ]
+              [ 10; 1 ] ]
+
+    Assert.True(FloatEquals 3.889 (WeightedMean (array,weight)) 0.01)
+
+
 
