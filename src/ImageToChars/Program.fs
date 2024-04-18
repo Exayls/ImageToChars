@@ -78,14 +78,7 @@ module ImageToChars =
         let lastYWeight = 1.0-abs(float(lastY)-lastFloatY)
         (
         Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> array[firstX+x1, firstY+y1]) ,
-        if (Array2D.length2 array) = 3 && height = 2
-            then array2D [[firstYWeight;lastYWeight]]
-            // then Array2D.init (int newWidth) (int newHeight) (fun x1 y1 -> float(1))
-        elif (Array2D.length2 array) = 5 && height = 3 && y = 0
-            then array2D [[firstYWeight;lastYWeight]]
-        elif (Array2D.length2 array) = 5 && height = 3 && y = 1
-            then array2D [[firstYWeight; 1.0;lastYWeight]]
-        else Array2D.init (int newWidth) (int newHeight) (fun x1 y1 ->
+        Array2D.init (int newWidth) (int newHeight) (fun x1 y1 ->
             if y1 = 0
                 then firstYWeight
             elif y1 = newHeight-1
