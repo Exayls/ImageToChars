@@ -110,8 +110,8 @@ module ImageToChars =
         )
  
 
-    // let Resize (array2d:'float[,]) width height= 
-    //     Array2D.init width height (fun x y -> Mean (GetFilter x y array2d width height))
+    let Resize (array2d:float[,]) width height=
+        Array2D.init width height (fun x y -> WeightedMean (GetFilter x y array2d width height))
 
 
 

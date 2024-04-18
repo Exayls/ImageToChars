@@ -154,21 +154,6 @@ let ``when_calling_GetArray_With_E_should_get_image_coresponding`` () =
     let imageArray = GetArrayFrom(image)
     Assert.True(AreEqualsWithAcc imageArray TFilter 0.01)
 
-// [<Fact>]
-// let ``when_resize_array_by_half_should_be_reduced`` () =
-//     let array: float[,] =
-//         array2D
-//             [ [ 1; 1; 1 ]
-//               [ 0.78; 0.78; 0.78 ]
-//               [ 0.78; 1; 1 ]
-//               [ 0.78; 0.78; 1 ]
-//               [ 0.78; 1; 1 ]
-//               [ 0.78; 0.78; 0.78 ] ]
-
-//     let image = Image.Load<Rgba32>("ressources/E_adjusted.png")
-//     let reduced = GetArrayFrom(image)
-//     printf "%A" (Transpose reduced)
-//     Assert.True(AreEquals reduced (Resize array 3 3))
 
 
 [<Fact>]
@@ -359,6 +344,26 @@ let ``weighted_mean`` () =
               [ 10; 1 ] ]
 
     Assert.True(FloatEquals 3.889 (WeightedMean (array,weight)) 0.01)
+
+
+[<Fact>]
+let ``when_resize_array_by_half_should_be_reduced`` () =
+    let array: float[,] =
+        array2D
+            [ [ 1; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 1 ]
+              [ 0.78; 1; 1 ]
+              [ 0.78; 0.78; 0.78 ] ]
+
+    let image = Image.Load<Rgba32>("ressources/E_adjusted.png")
+    let expectedReduced = Transpose (GetArrayFrom(image))
+    let reduced = (Resize array 3 3)
+
+    printfn "%A" expectedReduced
+    printfn "%A" reduced
+    Assert.True(AreEqualsWithAcc expectedReduced reduced 0.01)
 
 
 
