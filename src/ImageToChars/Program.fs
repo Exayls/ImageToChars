@@ -133,5 +133,4 @@ module ImageToChars =
                 x.Fill(Color.White)|> ignore
                 x.DrawText(textOptions, string(charToDraw), Color.Black)|> ignore
             )
-        image.Save("aaa.png")
         image

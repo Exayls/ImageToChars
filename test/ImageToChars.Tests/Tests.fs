@@ -369,12 +369,17 @@ let ``when_resize_array_by_half_should_be_reduced`` () =
 [<Fact>]
 let ``explore`` () =
 
-    let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) "ퟻ"
-    //"█"
+    let badImage = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) "􏿿"
+    let badArray = Resize (GetArrayFrom badImage) 8 16
 
-    let a = GetArrayFrom image
-
-    for i in 0 .. 0x10ffff do
+    let seq1 = seq {0 .. 0xd7ff}
+    let seq2 = seq {0xe000 .. 0x10ffff}
+    let charsIndexes = Seq.append seq1 seq2
+    for i in ( charsIndexes) do
         printf "%x" i
         printf "%s\n" (Char.ConvertFromUtf32 i)
+        let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) (Char.ConvertFromUtf32 i)
+        let imageArray = Resize (GetArrayFrom image) 8 16
+        if not (AreEqualsWithAcc imageArray badArray 0.01)
+            then printfn "%A" imageArray
     Assert.True(true)
