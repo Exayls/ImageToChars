@@ -6,6 +6,8 @@ open Xunit
 open SixLabors.ImageSharp
 open SixLabors.ImageSharp.Processing
 open SixLabors.ImageSharp.PixelFormats
+open SixLabors.ImageSharp.Drawing.Processing
+open SixLabors.Fonts;
 open Helper
 open ImageToChars.ImageToChars
 
@@ -361,9 +363,18 @@ let ``when_resize_array_by_half_should_be_reduced`` () =
     let expectedReduced = Transpose (GetArrayFrom(image))
     let reduced = (Resize array 3 3)
 
-    printfn "%A" expectedReduced
-    printfn "%A" reduced
     Assert.True(AreEqualsWithAcc expectedReduced reduced 0.01)
 
 
+[<Fact>]
+let ``explore`` () =
 
+    let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) "ퟻ"
+    //"█"
+
+    let a = GetArrayFrom image
+
+    for i in 0 .. 0x10ffff do
+        printf "%x" i
+        printf "%s\n" (Char.ConvertFromUtf32 i)
+    Assert.True(true)

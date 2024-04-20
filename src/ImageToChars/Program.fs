@@ -5,6 +5,8 @@ module ImageToChars =
     open SixLabors.ImageSharp
     open SixLabors.ImageSharp.Processing
     open SixLabors.ImageSharp.PixelFormats
+    open SixLabors.ImageSharp.Drawing.Processing
+    open SixLabors.Fonts;
     open Helper
 
     let GetArrayFrom (image: Image<Rgba32>) : float[,]= 
@@ -111,8 +113,25 @@ module ImageToChars =
  
 
     let Resize (array2d:float[,]) width height=
-        Array2D.init width height (fun x y -> WeightedMean (GetFilter x y array2d width height))
+        Array2D.init width height (fun x y -> WeightedMean (GetFilter x y array2d width height) )
 
 
+    let GetImageFromFont (fontPath:string) sizeFont sizeImage  charToDraw=
+        let collection = new FontCollection()
+        let family = collection.Add(fontPath)
+        let font = family.CreateFont(float32(int(sizeFont)), FontStyle.Regular);
 
+        let (x, y) = sizeImage
+        let image = new Image<Rgba32>(x, y);
+        let position = (PointF(float32(0),float32(4)))
+        let textOptions = new RichTextOptions(font)
+        textOptions.Origin <- position
+        textOptions.HorizontalAlignment <- HorizontalAlignment.Left
+        textOptions.VerticalAlignment <- VerticalAlignment.Top
 
+        image.Mutate  ( fun x ->
+                x.Fill(Color.White)|> ignore
+                x.DrawText(textOptions, string(charToDraw), Color.Black)|> ignore
+            )
+        image.Save("aaa.png")
+        image
