@@ -365,21 +365,54 @@ let ``when_resize_array_by_half_should_be_reduced`` () =
 
     Assert.True(AreEqualsWithAcc expectedReduced reduced 0.01)
 
+[<Fact>]
+let ``GetImageFromFont_should_return_char`` () =
+
+    let charNumber = "f8a5"
+
+    let fontPath = "ressources/myFont.ttf"
+    let image = GetImageFromFont fontPath 34 (21,32) (char(Convert.ToInt32((charNumber), 16)))
+    image.Save("aie.png")
+    let array = GetArrayFrom image
+    let reducedArray = Resize array 4 8
+
+    let expetedArray: float[,] =
+        array2D
+            [ 
+                [ 1.0; 1.0; 0.70; 0.43; 0.55; 0.55; 0.55; 0.35 ]
+                [ 1.0; 1.0; 0.65; 0.69; 0.79; 0.94; 0.96; 0.43 ]
+                [ 1.0; 1.0; 0.65; 0.69; 0.58; 0.60; 0.71; 0.43 ]
+                [ 1.0; 1.0; 0.70; 0.43; 0.55; 0.55; 0.55; 0.36 ]
+            ]
+
+    Assert.True(AreEqualsWithAcc expetedArray reducedArray 0.01)
+
 
 [<Fact>]
 let ``explore`` () =
 
-    let badImage = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) "􏿿"
-    let badArray = Resize (GetArrayFrom badImage) 8 16
+    let ReadLines filePath = System.IO.File.ReadLines(filePath)
+    printfn "1"
+    let seq = seq {
+        for i in ( ReadLines "ressources/chars" ) do
+            let number = (char(Convert.ToInt32((i), 16)))
+            let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) (char(number))
+            let imageArray = Resize (GetArrayFrom image) 12 24
+            imageArray
+        }
+    printfn "2"
+    Seq.iter (fun array -> printfn "%A" (Array2D.length2 array)) seq
+    printfn "3"
+        
 
-    let seq1 = seq {0 .. 0xd7ff}
-    let seq2 = seq {0xe000 .. 0x10ffff}
-    let charsIndexes = Seq.append seq1 seq2
-    for i in ( charsIndexes) do
-        printf "%x" i
-        printf "%s\n" (Char.ConvertFromUtf32 i)
-        let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) (Char.ConvertFromUtf32 i)
-        let imageArray = Resize (GetArrayFrom image) 8 16
-        if not (AreEqualsWithAcc imageArray badArray 0.01)
-            then printfn "%A" imageArray
+    // let badImage = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) "􏿿"
+    // let badArray = Resize (GetArrayFrom badImage) 8 16
+
+    // let seq2 = seq {0x3fe10 .. 0x10ffff}
+    // for i in ( seq2) do
+    //     let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) (Char.ConvertFromUtf32 i)
+    //     let imageArray = Resize (GetArrayFrom image) 8 16
+    //     // printfn "%x" i
+    //     if not (AreEqualsWithAcc imageArray badArray 0.01)
+    //         then printfn "%x" i
     Assert.True(true)
