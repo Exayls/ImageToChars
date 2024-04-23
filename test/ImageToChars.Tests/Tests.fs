@@ -390,19 +390,36 @@ let ``GetImageFromFont_should_return_char`` () =
 
 [<Fact>]
 let ``explore`` () =
+    let width = Console.WindowWidth
+    let height = Console.WindowHeight
 
+    let image = Image.Load<Rgba32>("ressources/image1.jpg")
+    let imageArray = GetArrayFrom(image)
+    let imageArray = Resize imageArray width*12 height*24
+
+    let bestArray = Array2D.create width height ((' ', 0))
     let ReadLines filePath = System.IO.File.ReadLines(filePath)
     printfn "1"
     let seq = seq {
         for i in ( ReadLines "ressources/chars" ) do
-            let number = (char(Convert.ToInt32((i), 16)))
+            let currentChar = (char(Convert.ToInt32((i), 16)))
             let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) (char(number))
-            let imageArray = Resize (GetArrayFrom image) 12 24
-            imageArray
+            let charArray = Resize (GetArrayFrom image) 12 24
+            (currentChar,charArray)
         }
     printfn "2"
-    Seq.iter (fun array -> printfn "%A" (Array2D.length2 array)) seq
-    printfn "3"
+    Seq.iter (fun (currentChar, charArray) -> 
+        Array2D.mapi (fun xCharArray yCharArray ->
+            let partialImageArray = Array2D.init 12 24 (fun xPartial yPartial -> 
+                charArray[xCharArray*12+xPartial, yCharArray*24+yPartial])
+
+            let m = Diff partialImageArray charArray
+            if m > bestArray[xCharArray,yCharArray][1]
+                then (currentChar, m)
+            else
+                bestArray[xCharArray,yCharArray]
+        ) charArray
+    map2 (fun (c, match) -> ) charArray imageArray) seq
         
 
     // let badImage = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) "􏿿"
