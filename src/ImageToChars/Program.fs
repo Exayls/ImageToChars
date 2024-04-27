@@ -57,6 +57,15 @@ module ImageToChars =
         }
         (Seq.sum seq)/float(height*width)
 
+    let Sum (array:float[,]) = 
+        let width = Array2D.length1 array
+        let height = Array2D.length2 array
+        let seq =seq{
+            for row in 0 .. width - 1 do
+                    for col in 0 .. height - 1 -> array[row,col]
+        }
+        (Seq.sum seq)
+
     let WeightedMean ((array:float[,]), (weight:float[,])) = 
         let width = Array2D.length1 array
         let height = Array2D.length2 array
@@ -134,3 +143,17 @@ module ImageToChars =
                 x.DrawText(textOptions, string(charToDraw), Color.Black)|> ignore
             )
         image
+
+
+    let SquaredError (array:float[,]) (array2:float[,])=
+        Sum (map2 (fun a1 a2 -> pown (a1-a2) 2) array array2)
+
+    let Display (charArray:char[,]) = 
+        let width = Array2D.length1 charArray
+        let height = Array2D.length2 charArray
+        for col in 0 .. height - 1 do 
+            printf "\n"
+            for row in 0 .. width - 1 do
+                printf "%c" charArray[row,col]
+
+
