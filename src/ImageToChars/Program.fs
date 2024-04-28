@@ -18,7 +18,7 @@ let accuracy = 21
 let imagePath = "ressources/image4.jpg"
 
 
-// DisplayImage width height accuracy imagePath
-let image = timeit (fun _ -> DisplayImage width height accuracy imagePath) 
+let image = DisplayImage width height accuracy imagePath
+// let image = timeit (fun _ -> DisplayImage width height accuracy imagePath) 
 Display image
 
