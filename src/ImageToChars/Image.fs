@@ -9,6 +9,15 @@ module Image =
     open SixLabors.Fonts;
     open Helper
 
+
+    let timeit f = 
+        let watch = new System.Diagnostics.Stopwatch()
+        watch.Start()
+        let res = f() 
+        watch.Stop()
+        printfn "Needed %f ms" (watch.Elapsed.TotalMilliseconds)
+        res
+
     let GetArrayFrom (image: Image<Rgba32>) : float[,]= 
         let pixels :Rgba32[,]= Helper.ImageSharp.GetPixelArray image
         let ComputeIntensity (a:Rgba32) = float (float(int a.R + int a.G + int a.B)/float(3*255))
@@ -186,8 +195,8 @@ module Image =
                 else
                     acc[xCharArray,yCharArray]
             )
-            printfn "%c" currentChar
-            Array2D.init width height GetBestChar
+            printfn "%c %d %d" currentChar width height
+            timeit (fun _ -> Array2D.init width height GetBestChar)
         ) bestArray seq)
 
         Display charArrayFinal

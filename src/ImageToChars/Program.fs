@@ -9,10 +9,16 @@ open SixLabors.Fonts;
 open Helper
 open ImageToChars.Image
 
-let width = Console.WindowWidth
-let height = Console.WindowHeight
+// let width = Console.WindowWidth
+// let height = Console.WindowHeight
+let width = 30
+let height = 8
+printfn "%d %d" width height
 let accuracy = 21
-let imagePath = "ressources/image3.jpg"
+let imagePath = "ressources/image4.jpg"
 
 
-DisplayImage width height accuracy imagePath
+// DisplayImage width height accuracy imagePath
+let image = timeit (fun _ -> DisplayImage width height accuracy imagePath) 
+Display image
+
