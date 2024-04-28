@@ -1,6 +1,4 @@
 module Tests
-
-
 open System
 open Xunit
 open SixLabors.ImageSharp
@@ -9,7 +7,7 @@ open SixLabors.ImageSharp.PixelFormats
 open SixLabors.ImageSharp.Drawing.Processing
 open SixLabors.Fonts;
 open Helper
-open ImageToChars.ImageToChars
+open ImageToChars.Image
 
 let FloatEquals x y precision=
     (x - precision) < y && y < (x + precision)
@@ -390,43 +388,44 @@ let ``GetImageFromFont_should_return_char`` () =
 
 [<Fact>]
 let ``explore`` () =
-    let width = Console.WindowWidth
-    let height = Console.WindowHeight
-    let accuracy = 15
+    // let width = Console.WindowWidth
+    // let height = Console.WindowHeight
+    // let accuracy = 21
 
-    let image = Image.Load<Rgba32>("ressources/image1.jpg")
-    let imageArray = GetArrayFrom(image)
-    let imageArray = Resize imageArray (width*accuracy) (height*accuracy*2)
+    // let image = Image.Load<Rgba32>("ressources/image1.jpg")
+    // let imageArray = GetArrayFrom(image)
+    // let imageArray = Array2D.map (fun a  -> 1.0-a) (Resize imageArray (width*accuracy) (height*accuracy*2))
 
-    let bestArray = Array2D.create width height ((' ', 0.0))
-    let ReadLines filePath = System.IO.File.ReadLines(filePath)
-    printfn "1"
-    let seq = seq {
-        for i in ( ReadLines "ressources/chars" ) do
-            let currentChar = char(i)
-            let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) (currentChar)
-            let charArray = Resize (GetArrayFrom image) accuracy (accuracy*2)
-            (currentChar,charArray)
-        }
-    printfn "2"
-    let charArrayFinal = Array2D.map (fun (c,_)-> c) (Seq.fold (fun (acc:(char*float)[,]) ((currentChar, charArray):char*float[,]) ->
-        let GetBestChar = (fun xCharArray yCharArray ->
-            let partialImageArray = Array2D.init (accuracy) (accuracy*2) (fun xPartial yPartial ->
-                imageArray[xCharArray*(accuracy)+xPartial, yCharArray*(accuracy*2)+yPartial]
-            )
-            let m = SquaredError partialImageArray charArray
-            let _, curentError = acc[xCharArray,yCharArray]
-            if m < curentError
-                then
-                (currentChar, m)
-            else
-                acc[xCharArray,yCharArray]
-        )
+    // let bestArray = Array2D.create width height ((' ', 0.0))
+    // let ReadLines filePath = System.IO.File.ReadLines(filePath)
+    // printfn "1"
+    // let seq = seq {
+    //     for i in ( ReadLines "ressources/chars" ) do
+    //         let currentChar = char(i)
+    //         let image = GetImageFromFont "ressources/myFont.ttf" 34 (21,42) (currentChar)
+    //         let charArray = Resize (GetArrayFrom image) accuracy (accuracy*2)
+    //         (currentChar,charArray)
+    //     }
+    // printfn "2"
+    // let charArrayFinal = Array2D.map (fun (c,_)-> c) (Seq.fold (fun (acc:(char*float)[,]) ((currentChar, charArray):char*float[,]) ->
+    //     let GetBestChar = (fun xCharArray yCharArray ->
+    //         let partialImageArray = Array2D.init (accuracy) (accuracy*2) (fun xPartial yPartial ->
+    //             imageArray[xCharArray*(accuracy)+xPartial, yCharArray*(accuracy*2)+yPartial]
+    //         )
+    //         let m = SquaredError partialImageArray charArray
+    //         let _, curentError = acc[xCharArray,yCharArray]
+    //         let validity = 1.0/(m+1.0)
+    //         if validity > curentError
+    //             then
+    //             (currentChar, validity)
+    //         else
+    //             acc[xCharArray,yCharArray]
+    //     )
+    //     printfn "%c" currentChar
+    //     Array2D.init width height GetBestChar
+    // ) bestArray seq)
 
-        Array2D.init width height GetBestChar
-    ) bestArray seq)
-
-    Display charArrayFinal
+    // Display charArrayFinal
 
 
 
