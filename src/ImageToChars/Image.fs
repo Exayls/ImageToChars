@@ -199,4 +199,4 @@ module Image =
             timeit (fun _ -> Array2D.init width height GetBestChar)
         ) bestArray seq)
 
-        Display charArrayFinal
+        charArrayFinal

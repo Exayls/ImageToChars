@@ -388,5 +388,7 @@ let ``GetImageFromFont_should_return_char`` () =
 
 [<Fact>]
 let ``explore`` () =
+    
+
 
     Assert.True(true)
